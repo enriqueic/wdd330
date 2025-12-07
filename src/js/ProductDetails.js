@@ -7,24 +7,23 @@ export default class ProductDetails{
 		this.dataSource = dataSource;
 	}
 	
+	async init(){
+		this.product = await this.dataSource.findProductById(this.productId);
+		//console.log(this.product);
+		this.renderProductDetails();
+		
+		// add listener to Add to Cart button
+		document
+			.getElementById("addToCart")
+			.addEventListener("click", this.addProductToCart.bind(this));
+	}
+	
+	// add to cart button event handler
 	addProductToCart() {
   		const cartItems = getLocalStorage("so-cart") || [];	cartItems.push(this.product); 
 		setLocalStorage("so-cart", cartItems);
 		console.log(cartItems)
 	}
-	
-	async init(){
-		this.product = await this.dataSource.findProductById(this.productId);
-		
-		this.renderProductDetails();
-		
-		// add listener to Add to Cart button
-		document
-  		.getElementById("addToCart")
-  		.addEventListener("click", this.addProductToCart.bind(this));
-	}
-	
-	// add to cart button event handler
 	
 	renderProductDetails(){
 		renderProductDetailsTemplate(this.product);
@@ -34,7 +33,6 @@ export default class ProductDetails{
 function renderProductDetailsTemplate(product) {
   document.querySelector('h2').textContent = product.Brand.Name;
   document.querySelector('h3').textContent = product.NameWithoutBrand;
-	console.log(document.getElementById("productImage"))
   const productImage = document.getElementById('productImage');
   productImage.src = product.Image;
   productImage.alt = product.NameWithoutBrand;
