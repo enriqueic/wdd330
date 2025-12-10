@@ -1,11 +1,3 @@
-function convertToJson(res) {
-  if (res.ok) {
-    return res.json();
-  } else {
-    throw new Error("Bad Response");
-  }
-}
-
 export default class ProductData {
   constructor(category) {
     this.category = category;
@@ -21,3 +13,12 @@ export default class ProductData {
     return products.find((item) => item.Id === id);
   }
 }
+
+function convertToJson(res) {
+  if (res.ok) {
+    return res.json();
+  } else {
+    throw new Error("Bad Response");
+  }
+}
+
