@@ -20,11 +20,22 @@ export default class ProductDetails{
 	}
 	
 	// add to cart button event handler
-	addProductToCart() {
-  		const cartItems = getLocalStorage("so-cart") || [];	cartItems.push(this.product); 
-		setLocalStorage("so-cart", cartItems);
-		console.log(cartItems)
-	}
+    addProductToCart() {
+        const cartItems = getLocalStorage("so-cart") || [];
+        const existingIndex = cartItems.findIndex(item => item.Id === this.product.Id);
+
+        if (existingIndex > -1) {
+            // If already in cart, increment quantity
+            cartItems[existingIndex].quantity = (cartItems[existingIndex].quantity || 1) + 1;
+        } else {
+            // If not in cart, add quantity 1
+            const productToAdd = { ...this.product, quantity: 1 };
+            cartItems.push(productToAdd);
+        }
+
+        setLocalStorage("so-cart", cartItems);
+        console.log(cartItems);
+    }
 	
 	renderProductDetails(){
 		renderProductDetailsTemplate(this.product);
