@@ -4,6 +4,21 @@ function renderCartContents() {
   const cartItems = getLocalStorage("so-cart");
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
+
+  document.querySelector(".product-list").innerHTML = htmlItems.join("");
+
+  // Price container logic
+  const totalContainer = document.getElementById("cart-total");
+  if (cartItems.length > 0) {
+    // Removing hide class from cart footer
+    const cartFooter = document.querySelector(".cart-footer");
+    cartFooter.classList.remove("hide");
+    // Use map to extract prices, then reduce to sum
+    const total = cartItems
+      .map((item) => Number(item.FinalPrice))
+      .reduce((sum, price) => sum + price, 0);
+    totalContainer.innerHTML = `<p>$${total.toFixed(2)}</p>`;
+  }
 }
 
 function cartItemTemplate(item) {
